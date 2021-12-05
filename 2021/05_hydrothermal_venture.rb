@@ -8,11 +8,11 @@ lines.each { |x1, y1, x2, y2|
   dy = y2 <=> y1
 
   if x1 == x2
-    y1.step(y2, dy).each { _90[[x1, _1]] += 1 }
+    y1.step(y2, dy).each { _90[x1 + _1 * 1000] += 1 }
   elsif y1 == y2
-    x1.step(x2, dx).each { _90[[_1, y1]] += 1 }
+    x1.step(x2, dx).each { _90[_1 + y1 * 1000] += 1 }
   else
-    x1.step(x2, dx).each_with_index { |x, i| _45[[x, y1 + i * dy]] += 1 }
+    x1.step(x2, dx).each_with_index { |x, i| _45[x + (y1 + i * dy) * 1000] += 1 }
   end
 }
 

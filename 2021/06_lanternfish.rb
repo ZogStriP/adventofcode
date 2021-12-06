@@ -1,9 +1,9 @@
 F = DATA.read
 
-p *[80, 256].map { |i|
+[80, 256].map { |i|
   f = (?0..?8).map { F.count _1 }
   i.times { f[7] += f[0]; f.rotate! }
-  f.sum
+  p f.sum
 }
 
 __END__

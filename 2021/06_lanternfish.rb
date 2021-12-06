@@ -1,5 +1,4 @@
-F = DATA.read.split(?,).map(&:to_i).tally
-F.default = 0
+F = DATA.read.split(?,).map(&:to_i).tally.tap { _1.default = 0 }
 
 256.times { |i|
   F[7] += F[9] = F.delete(0) { 0 }

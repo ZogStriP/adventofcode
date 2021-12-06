@@ -1,9 +1,9 @@
-F = DATA.read.split(?,).map(&:to_i).tally.tap { _1.default = 0 }
+F = DATA.read
 
-256.times { |i|
-  F[7] += F[9] = F.delete(0) { 0 }
-  F.transform_keys! &:pred
-  p F.sum{_2} if [79, 255].include? i
+p *[80, 256].map { |i|
+  f = (?0..?8).map { F.count _1 }
+  i.times { f[7] += f[0]; f.rotate! }
+  f.sum
 }
 
 __END__

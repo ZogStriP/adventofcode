@@ -1,6 +1,6 @@
 N = DATA.map { _1.chop.chars }
 
-f = -> n, d { n.transpose.map { |b| (b << ?0 << ?1).tally.sort_by{[_2, _1]}[d][0] } }
+f = -> n, d { n.transpose.map { |b| b.tally.sort_by{[_2, _1]}[d][0] } }
 
 g = -> n, d {
   0.step { |i|
@@ -10,8 +10,8 @@ g = -> n, d {
   }
 }
 
-p [0, 1].map { |d| f[N, d].join.to_i 2 }.reduce :*
-p [0, 1].map { |d| g[N, d].join.to_i 2 }.reduce :*
+p [0, -1].map { |d| f[N, d].join.to_i 2 }.reduce :*
+p [0, -1].map { |d| g[N, d].join.to_i 2 }.reduce :*
 
 __END__
 010100110111

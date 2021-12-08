@@ -9,11 +9,11 @@ p INPUT.sum { |s, v|
   seven = s[3][0]
   four  = s[4][0]
   eight = s[7][0]
-  nine  = s[6].find { four & _1 == four }    ; s[6].delete(nine)
-  zero  = s[6].find { one & _1 == one }      ; s[6].delete(zero)
+  nine  = s[6].delete s[6].find { four & _1 == four }
+  zero  = s[6].delete s[6].find { one & _1 == one }
   six   = s[6][0]
-  three = s[5].find { one & _1 == one }      ; s[5].delete(three)
-  five  = s[5].find { (six - _1).size == 1 } ; s[5].delete(five)
+  three = s[5].delete s[5].find { one & _1 == one }
+  five  = s[5].delete s[5].find { (six - _1).size == 1 }
   two   = s[5][0]
 
   segments = [zero, one, two, three, four, five, six, seven, eight, nine].map.with_index { |s, i| [s.join, i] }.to_h

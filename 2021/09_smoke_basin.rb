@@ -16,7 +16,7 @@ H.times { |y|
   }
 }
 
-p l.sum { G[_1][_2] } + l.size
+p l.sum { 1 + G[_1][_2] }
 
 p l.map { |y, x|
   q = [[y, x]]

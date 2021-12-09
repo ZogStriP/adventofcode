@@ -2,34 +2,34 @@ require "set"
 
 N = [[-1,0],[1,0],[0,-1],[0,1]]
 
-G = DATA.read.split.map { _1.chars.map &:to_i }
-H = G.size
-W = G[0].size
+G = DATA.read.split.map &:chars
+Y = (0...G.size)
+X = (0...G[0].size)
 
 l = []
 
-H.times { |y|
-  W.times { |x|
+Y.each { |y|
+  X.each { |x|
     l << [y, x] if N.map { |dy, dx| [y + dy, x + dx] }
-                    .select { |yy, xx| (0...H) === yy && (0...W) === xx }
+                    .select { |yy, xx| Y === yy && X === xx }
                     .all? { |yy, xx| G[y][x] < G[yy][xx] }
   }
 }
 
-p l.sum { 1 + G[_1][_2] }
+p l.sum { 1 + G[_1][_2].to_i }
 
 p l.map { |y, x|
   q = [[y, x]]
-  v = Set.new [[y, x]]
+  v = Set.new q
 
   while c = q.shift
     y, x = c
     N.map { |dy, dx| [y + dy, x + dx] }
-     .each { |yy, xx| (0...H) === yy && (0...W) === xx && G[yy][xx] < 9 && G[y][x] < G[yy][xx] && v.add?([yy, xx]) && q << [yy, xx] }
+     .each { |yy, xx| Y === yy && X === xx && G[yy][xx] < ?9 && v.add?([yy, xx]) && q << [yy, xx] }
   end
 
   v.size
-}.sort[-3..].reduce :*
+}.max(3).reduce :*
 
 __END__
 9987675345698765453987654321234589999899878923493212345678999998656782467898999899878301234578998787

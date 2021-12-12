@@ -2,12 +2,14 @@ N = Hash.new { |h, k| h[k] = [] }
 
 DATA.each {
   a, b = _1.chomp.split ?-
-  N[a] << b unless b["start"]
-  N[b] << a unless a["start"]
+  N[a] << b if b != "start"
+  N[b] << a if a != "start"
 }
 
+N.transform_values! { |v| v.partition { _1[/[A-Z]/] }}
+
 def explore(path, max)
-  path[-1]["end"] ? 1 : N[path[-1]].sum { (_1[/[A-Z]/] || path.count(_1) < max) && explore(path + [_1], _1[/[a-z]/] && path.include?(_1) ? 1 : max) || 0 }
+  path[-1]["end"] ? 1 : N[path[-1]][0].sum { explore(path + [_1], max) || 0 } + N[path[-1]][1].sum { path.count(_1) < max && explore(path + [_1], path.include?(_1) ? 1 : max) || 0 }
 end
 
 p explore(["start"], 1)

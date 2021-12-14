@@ -4,8 +4,6 @@ rules = rules.split("\n").to_h { _1.split(" -> ") }
 solos = polymer.chars.tally
 pairs = polymer.chars.each_cons(2).map(&:join).tally
 
-p solos, pairs
-
 p *[10, 30].map { |n|
   n.times {
     pairs = pairs.each_with_object(Hash.new(0)) { |(k, v), p|

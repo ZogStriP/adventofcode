@@ -1,32 +1,22 @@
-xmin, xmax, ymin, ymax = DATA.read.scan(/-?\d+/).map &:to_i
+X, Y = DATA.read.scan(/-?\d+\.\.-?\d+/).map { eval _1 }
 
-X = (xmin..xmax)
-Y = (ymin..ymax)
+fire = -> dx, dy {
+    💥, x, y, ymax = false, 0, 0, 0
 
-yys = -> dy {
-  y, v = 0, []
+    loop {
+      x += dx; dx -= 1 if dx > 0
+      y += dy; dy -= 1
+      ymax = [ymax, y].max
+      break 💥 = true if X === x && Y === y
+      break if y <= Y.min
+    }
 
-  0.step { |s|
-    v << s if Y === y
-    y += dy; dy -= 1
-    return v if y < ymin
-  }
+    [💥, ymax]
 }
 
-xxs = -> s {
-  v = []
+hits = [*(1..X.max)].product([*(Y.min..-Y.min)]).map { fire[_1, _2] }.filter { _1[0] }
 
-  (1..xmax).each { |xx|
-    x, dx = 0, xx
-    s.times { x += dx; dx -= 1 if dx > 0 }
-    v << xx if X === x
-  }
-
-  v
-}
-
-p (1..(-ymin).downto(1).find { |dy| yys[dy].any? { xxs[_1].size > 0 }}).sum
-p (ymin..-ymin).sum { |dy| yys[dy].flat_map { xxs[_1] }.uniq.size }
+p hits.map(&:last).max, hits.size
 
 __END__
 target area: x=195..238, y=-93..-67

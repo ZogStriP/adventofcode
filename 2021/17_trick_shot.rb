@@ -14,7 +14,7 @@ fire = -> dx, dy {
     [💥, ymax]
 }
 
-hits = [*(1..X.max)].product([*(Y.min..-Y.min)]).map { fire[_1, _2] }.filter { _1[0] }
+hits = [*(1..X.max)].product([*(Y.min..-Y.min)]).map { fire[_1, _2] }.filter &:first
 
 p hits.map(&:last).max, hits.size
 

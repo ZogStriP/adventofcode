@@ -6,11 +6,13 @@ min = -1
 ymax = image.size + 1
 xmax = image[0].size + 1
 
+W = xmax + 100
+
 pixels = Hash.new(0)
 
 image.each_with_index { |l, y|
   l.each_char.with_index { |c, x|
-    pixels[[y, x]] = c[?#] ? 1 : 0
+    pixels[y * W + x] = 1 if c[?#]
   }
 }
 
@@ -18,12 +20,12 @@ N = [-1,0,1].product([-1,0,1])
 
 puts [2, 48].map {
   _1.times { |t|
-    new = Hash.new(algorithm[0][?#] ? 1 - (t % 2) : 0)
+    new = Hash.new(algorithm[0][?#] ? (t % 2) ^ 1 : 0)
 
     (min...ymax).each { |y|
       (min...xmax).each { |x|
-        index = N.map { |dy, dx| pixels[[y + dy, x + dx]] }.join.to_i(2)
-        new[[y, x]] = algorithm[index][?#] ? 1 : 0
+        index = N.map { |dy, dx| pixels[(y + dy) * W + x + dx] }.join.to_i(2)
+        new[y * W + x] = algorithm[index][?#] ? 1 : 0
       }
     }
 

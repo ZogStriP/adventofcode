@@ -1,16 +1,13 @@
-LITERS = 150
+C = DATA.map &:to_i
+W = [0] * C.size
 
-containers = DATA.each_line.map(&:to_i)
-ways = [0] * containers.size
+(1...C.size).each { |n|
+  C.combination(n).each { |c|
+    W[c.size] += 1 if c.sum == 150
+  }
+}
 
-containers.size.times do |n|
-  containers.combination(n).each do |c|
-    ways[c.size] += 1 if c.sum == LITERS
-  end
-end
-
-p ways.sum
-p ways.find(&:positive?)
+p W.sum, W.find{_1>0}
 
 __END__
 33

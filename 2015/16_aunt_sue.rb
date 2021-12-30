@@ -1,26 +1,25 @@
-EQUAL = :==.to_proc
-LESS = :<.to_proc
-GREATER = :>.to_proc
-
 SUE = {
-  children: [3, EQUAL],
-  cats: [7, GREATER],
-  samoyeds: [2, EQUAL],
-  pomeranians: [3, LESS],
-  akitas: [0, EQUAL],
-  vizslas: [0, EQUAL],
-  goldfish: [5, LESS],
-  trees: [3, GREATER],
-  cars: [2, EQUAL],
-  perfumes: [1, EQUAL],
+  children: 3,
+  cats: 7,
+  samoyeds: 2,
+  pomeranians: 3,
+  akitas: 0,
+  vizslas: 0,
+  goldfish: 5,
+  trees: 3,
+  cars: 2,
+  perfumes: 1,
 }
 
-puts DATA.each_line.with_object([]) { |l, r|
-  n = l[/Sue (\d+)/, 1].to_i
-  sue = l.scan(/(\w+): (\d+)/).map { |n, v| [n.to_sym, v.to_i] }.to_h
-  r[0] = n if sue.all? { |k, v| SUE[k][0] == v }
-  r[1] = n if sue.all? { |k, v| t, f = SUE[k]; f[v, t] }
-}
+sues = DATA.map { eval "{#{_1.split(?:,2)[1]}}" }
+
+p sues.index { _1.all? { |k, v| SUE[k] == v } } + 1
+
+p sues.index { _1.all? { |k, v|
+  k == :cats || k == :trees ? SUE[k] < v :
+  k == :pomeranians || k == :goldfish ? SUE[k] > v :
+  SUE[k] == v
+} } + 1
 
 __END__
 Sue 1: children: 1, cars: 8, vizslas: 7

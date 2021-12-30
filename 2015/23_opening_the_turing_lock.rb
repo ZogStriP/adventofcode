@@ -17,10 +17,10 @@ while (0...instructions.size) === counter
   when /jmp/ then
     offset = i[/jmp (.+)/, 1].to_i
   when /jie/ then
-    r, o = i.scan(/jie (\w), (.+)/).flatten
+    r, o = i.scan(/jie (\w), (.+)/)[0]
     offset = o.to_i if registers[r].even?
   when /jio/ then
-    r, o = i.scan(/jio (\w), (.+)/).flatten
+    r, o = i.scan(/jio (\w), (.+)/)[0]
     offset = o.to_i if registers[r] == 1
   end
   counter += offset

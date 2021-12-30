@@ -1,31 +1,22 @@
-instructions = DATA.read.split("\n").map { |i|
-  action, x, y, xx, yy = /(.+) (\d+),(\d+) through (\d+),(\d+)/.match(i).captures
-  [action, (x.to_i..xx.to_i), (y.to_i..yy.to_i)]
-}
+instructions = DATA.read.split("\n")
 
-grid = [0] * 1000 * 1000
+W = H = 1000
 
-instructions.each { |action, xx, yy|
-  case action
-  when "turn on"  then xx.each { |x| yy.each { |y| grid[x + y * 1000] = 1 } }
-  when "turn off" then xx.each { |x| yy.each { |y| grid[x + y * 1000] = 0 } }
-  when "toggle"   then xx.each { |x| yy.each { |y| grid[x + y * 1000] ^= 1 } }
+lights = [0] * W * H
+brightness = [0] * W * H
+
+instructions.each {
+  a, b, c, d = _1.scan(/\d+/).map &:to_i
+
+  case _1
+  when /off/; (a..c).each { |y| (b..d).each { |x| lights[y * W + x] = 0; brightness[y * W + x] > 0 && brightness[y * W + x] -= 1 } }
+  when /on/; (a..c).each { |y| (b..d).each { |x| lights[y * W + x] = 1; brightness[y * W + x] += 1 } }
+  when /toggle/; (a..c).each { |y| (b..d).each { |x| lights[y * W + x] ^= 1; brightness[y * W + x] += 2 } }
   end
 }
 
-p grid.count(1)
-
-grid = [0] * 1000 * 1000
-
-instructions.each { |action, xx, yy|
-  case action
-  when "turn on"  then xx.each { |x| yy.each { |y| grid[x + y * 1000] += 1 } }
-  when "turn off" then xx.each { |x| yy.each { |y| grid[x + y * 1000] > 0 && grid[x + y * 1000] -= 1 } }
-  when "toggle"   then xx.each { |x| yy.each { |y| grid[x + y * 1000] += 2 } }
-  end
-}
-
-p grid.sum
+p lights.count(1)
+p brightness.sum
 
 __END__
 turn on 887,9 through 959,629

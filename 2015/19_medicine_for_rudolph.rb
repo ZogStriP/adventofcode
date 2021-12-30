@@ -1,21 +1,27 @@
-MOLECULE = "ORnPBPMgArCaCaCaSiThCaCaSiThCaCaPBSiRnFArRnFArCaCaSiThCaCaSiThCaCaCaCaCaCaSiRnFYFArSiRnMgArCaSiRnPTiTiBFYPBFArSiRnCaSiRnTiRnFArSiAlArPTiBPTiRnCaSiAlArCaPTiTiBPMgYFArPTiRnFArSiRnCaCaFArRnCaFArCaSiRnSiRnMgArFYCaSiRnMgArCaCaSiThPRnFArPBCaSiRnMgArCaCaSiThCaSiRnTiMgArFArSiThSiThCaCaSiRnMgArCaCaSiRnFArTiBPTiRnCaSiAlArCaPTiRnFArPBPBCaCaSiThCaPBSiThPRnFArSiThCaSiThCaSiThCaPTiBSiRnFYFArCaCaPRnFArPBCaCaPBSiRnTiRnFArCaPRnFArSiRnCaCaCaSiThCaRnCaFArYCaSiRnFArBCaCaCaSiThFArPBFArCaSiRnFArRnCaCaCaFArSiRnFArTiRnPMgArF"
-
-replacements = DATA.read.split("\n").map { |l| l.scan(/\w+/) }
+replacements, molecule = DATA.read.strip.split("\n\n")
+replacements = replacements.split("\n").map { _1.scan(/\w+/) }
 
 molecules = {}
 
 replacements.each { |from, to|
-  i = -1
-  while i = MOLECULE.index(from, i + 1)
-    molecules[MOLECULE[0, i] + to + MOLECULE[i + from.size..]] = true
-  end
+  molecule.scan(from) { molecules[$` + to + $'] = true }
 }
 
 p molecules.size
 
-elements = replacements.map(&:first).uniq
+p loop {
+  s = 0
+  m = molecule.dup
+  r = replacements.shuffle
 
-p MOLECULE.scan(Regexp.union(elements)).size - MOLECULE.count(?Y) - 1
+  loop {
+    e = true
+    r.each { |from, to| m.gsub!(to) { e = false; s += 1; from } }
+    break if e
+  }
+
+  break s if m == "e"
+}
 
 __END__
 Al => ThF
@@ -61,3 +67,5 @@ Ti => TiTi
 e => HF
 e => NAl
 e => OMg
+
+ORnPBPMgArCaCaCaSiThCaCaSiThCaCaPBSiRnFArRnFArCaCaSiThCaCaSiThCaCaCaCaCaCaSiRnFYFArSiRnMgArCaSiRnPTiTiBFYPBFArSiRnCaSiRnTiRnFArSiAlArPTiBPTiRnCaSiAlArCaPTiTiBPMgYFArPTiRnFArSiRnCaCaFArRnCaFArCaSiRnSiRnMgArFYCaSiRnMgArCaCaSiThPRnFArPBCaSiRnMgArCaCaSiThCaSiRnTiMgArFArSiThSiThCaCaSiRnMgArCaCaSiRnFArTiBPTiRnCaSiAlArCaPTiRnFArPBPBCaCaSiThCaPBSiThPRnFArSiThCaSiThCaSiThCaPTiBSiRnFYFArCaCaPRnFArPBCaCaPBSiRnTiRnFArCaPRnFArSiRnCaCaCaSiThCaRnCaFArYCaSiRnFArBCaCaCaSiThFArPBFArCaSiRnFArRnCaCaCaFArSiRnFArTiRnPMgArF

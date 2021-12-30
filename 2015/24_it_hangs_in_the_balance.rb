@@ -1,21 +1,21 @@
-weights = DATA.read.split("\n").map(&:to_i).sort
+weights = DATA.map &:to_i
 
-@groups = 3 # 4 for part 2
-@sum = weights.sum / @groups
+groups = 3 # 4 for part 2
+sum = weights.sum / groups
 
-def quantum(weights, groups)
-  (1..weights.size).each do |s|
-    weights.combination(s).each do |c|
-      if c.sum == @sum
-        return true if groups == 2
-        return quantum(weights - c, groups - 1) if groups < @groups
-        return c.reduce(:*) if quantum(weights - c, groups - 1)
+quantum = -> w, g {
+  (1..w.size).each { |s|
+    w.combination(s).each { |c|
+      if c.sum == sum
+        return true if g == 2
+        return quantum[w - c, g - 1] if g < groups
+        return c.reduce(:*) if quantum[w - c, g - 1]
       end
-    end
-  end
-end
+    }
+  }
+}
 
-p quantum(weights, @groups)
+p quantum[weights, groups]
 
 __END__
 1

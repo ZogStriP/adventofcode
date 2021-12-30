@@ -1,9 +1,7 @@
-look_and_say = -> (n) { n.gsub!(/(\d)\1*/) { |s| "#{s.size}#{s[0]}" } }
+sequence = "1113122113"
 
-n = "1113122113"
+40.times { sequence.gsub!(/(.)\1*/) { "#{$&.size}#{$1}" } }
+p sequence.size
 
-40.times { look_and_say[n] }
-p n.size
-
-10.times { look_and_say[n] }
-p n.size
+10.times { sequence.gsub!(/(.)\1*/) { "#{$&.size}#{$1}" } }
+p sequence.size

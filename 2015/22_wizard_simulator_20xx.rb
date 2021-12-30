@@ -21,6 +21,7 @@ class Game
     @poison_timer = 0
     @recharge_timer = 0
     @hard = hard
+    @hero_hp -= 1 if @hard
   end
 
   def to_i
@@ -44,7 +45,7 @@ class Game
   end
 
   def spells
-    s = COSTS.select { |_, m| m <= @hero_mp }
+    s = COSTS.select { _2 <= @hero_mp }
     s.delete(:shield)   if @shield_timer > 0
     s.delete(:poison)   if @poison_timer > 0
     s.delete(:recharge) if @recharge_timer > 0
@@ -85,9 +86,7 @@ end
 @played = {}
 
 def best(game, spells: [], cost: 0, turn: 1)
-  if (c = @played[game.to_i]) && c <= cost
-    return INFINITY
-  end
+  return INFINITY if (c = @played[game.to_i]) && c <= cost
 
   @played[game.to_i] = cost
 

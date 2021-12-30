@@ -1,22 +1,23 @@
 N = 29_000_000
 MAX = N / 10
 
-houses = [10] * (MAX + 1)
+h = [10] * (MAX + 1)
 
 (2..MAX).each { |a|
   a.step(MAX, a) { |b|
-    houses[b] += a * 10
+    h[b] += a * 10
   }
 }
 
-p houses.index { |h| h >= N }
+p h.index { _1 >= N }
 
-houses = [11] * (MAX + 1)
+h = [11] * (MAX + 1)
 
 (2..MAX).each { |a|
   a.step(MAX, a).first(50).each { |b|
-    houses[b] += a * 11
+    h[b] += a * 11
   }
 }
 
-p houses.index { |h| h >= N }
+p h.index { _1 >= N }
+

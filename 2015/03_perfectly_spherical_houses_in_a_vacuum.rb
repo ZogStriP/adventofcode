@@ -1,26 +1,26 @@
 require "matrix"
 
 DIRS = {
-  ">" => Vector[1, 0],
-  "<" => Vector[-1, 0],
-  "^" => Vector[0, 1],
-  "v" => Vector[0, -1],
+  ?> => Vector[1,0],
+  ?< => Vector[-1,0],
+  ?^ => Vector[0,1],
+  ?v => Vector[0,-1],
 }
 
-directions = DATA.read.strip
+directions = DATA.read.chomp
 
-santa = Vector[0, 0]
-presents = Hash.new(0)
+santa = Vector[0,0]
+presents = {}
 
-directions.each_char { |d| presents[santa += DIRS[d]] += 1 }
+directions.each_char { presents[santa += DIRS[_1]] = true }
 
 p presents.size
 
-santa = Vector[0, 0]
-robot = Vector[0, 0]
-presents = Hash.new(0)
+santa = Vector[0,0]
+robot = Vector[0,0]
+presents = {}
 
-directions.each_char.with_index { |d, i| i.odd? ? presents[santa += DIRS[d]] += 1 : presents[robot += DIRS[d]] += 1 }
+directions.each_char.with_index { _2.odd? ? presents[santa += DIRS[_1]] = true : presents[robot += DIRS[_1]] = true }
 
 p presents.size
 

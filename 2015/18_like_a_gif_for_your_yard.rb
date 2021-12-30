@@ -1,46 +1,38 @@
-DIM = 100
-SIZE = DIM + 2
+grid = DATA.flat_map { |l| l.chomp.chars.map { _1[?#] ? 1 : 0 } }
 
-NEIGHBORS = [-(SIZE - 1), -SIZE, -(SIZE + 1), -1, 1, SIZE - 1, SIZE, SIZE + 1]
+step = -> lights {
+  l = []
 
-CORNERS = {
-  1 + SIZE => true,
-  DIM + SIZE => true,
-  1 + DIM * SIZE => true,
-  DIM + DIM * SIZE => true,
-}
-
-grid = []
-
-DATA.each_line.with_index { |l, y|
-  l.each_char.with_index { |c, x|
-    grid[(x + 1) + (y + 1) * SIZE] = true if c[?#]
-  }
-}
-
-def step(lights, corners = {})
-  new_lights = []
-
-  (1..DIM).each { |x|
-    (1..DIM).each { |y|
-      c = x + y * SIZE
-      n = NEIGHBORS.count { |n| lights[c + n] }
-      new_lights[c] = true if n == 3 || (n == 2 && lights[c]) || corners[c]
-    }
+  10000.times { |i|
+    y, x = i.divmod(100)
+    n  = 0
+    n += lights[(y-1)*100+x-1] if x > 0 && y > 0
+    n += lights[(y-1)*100+x]   if y > 0
+    n += lights[(y-1)*100+x+1] if x < 99 && y > 0
+    n += lights[y*100+x-1]     if x > 0
+    n += lights[y*100+x+1]     if x < 99
+    n += lights[(y+1)*100+x-1] if x > 0 && y < 99
+    n += lights[(y+1)*100+x]   if y < 99
+    n += lights[(y+1)*100+x+1] if x < 99 && y < 99
+    l[i] = n == 3 || (lights[i] == 1 && n == 2) ? 1 : 0
   }
 
-  new_lights
-end
+  l
+}
 
 lights = grid.dup
 
-100.times { lights = step(lights) }
-p lights.count(true)
+100.times { lights = step[lights] }
+p lights.count(1)
 
-CORNERS.keys.each { |c| grid[c] = true }
+grid[0] = grid[99] = grid[99*100] = grid[100*100-1] = 1
 
-100.times { grid = step(grid, CORNERS) }
-p grid.count(true)
+100.times {
+  grid = step[grid]
+  grid[0] = grid[99] = grid[99*100] = grid[100*100-1] = 1
+}
+
+p grid.count(1)
 
 __END__
 ###.##..##.#..#.##...#..#.####..#.##.##.##..###...#....#...###..#..###..###.#.#.#..#.##..#...##.#..#

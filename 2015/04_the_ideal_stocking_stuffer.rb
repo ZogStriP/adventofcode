@@ -1,7 +1,7 @@
-require "digest/md5"
+require "digest"
 
-SECRET_KEY = "bgvyzdsv"
+SECRET = "bgvyzdsv"
 
-p (1..).find { |n| Digest::MD5.hexdigest(SECRET_KEY + n.to_s).start_with? "00000" }
-p (1..).find { |n| Digest::MD5.hexdigest(SECRET_KEY + n.to_s).start_with? "000000" }
+p (1..).find { Digest::MD5.hexdigest(SECRET + _1.to_s).start_with? "00000" }
+p (1..).find { Digest::MD5.hexdigest(SECRET + _1.to_s).start_with? "000000" }
 

@@ -1,7 +1,7 @@
-presents = DATA.read.split("\n").map { |l| l.split(?x).map(&:to_i).sort }
+boxes = DATA.map { _1.split(?x).map(&:to_i).sort }
 
-p presents.sum { |a, b, c| 3 * (a * b) + 2 * (b * c) + 2 * (a * c) }
-p presents.sum { |a, b, c| 2 * (a + b) + (a * b * c) }
+p boxes.sum { |a, b, c| 3*a*b + 2*a*c + 2*b*c }
+p boxes.sum { |a, b, c| 2*(a+b) + a*b*c}
 
 __END__
 20x3x11

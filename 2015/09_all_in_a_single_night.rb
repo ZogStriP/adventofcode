@@ -1,15 +1,17 @@
-distances = DATA.read.split("\n").map.with_object(Hash.new { |h, k| h[k] = Hash.new(0) }) { |l, dists|
-  a, b, d = /(\w+) to (\w+) = (\d+)/.match(l).captures
-  dists[a][b] = dists[b][a] = d.to_i
+distances = Hash.new { |h, k| h[k] = Hash.new(0) }
+
+DATA.each {
+  a, b, d = _1.scan(/(.+) to (.+) = (.+)/)[0]
+  distances[a][b] = distances[b][a] = d.to_i
 }
 
 min = 1.0 / 0
 max = 0
 
 distances.keys.permutation.each { |path|
-  d = path.each_cons(2).reduce(0) { |d, (a, b)| d + distances[a][b] }
-  min = d if d < min
-  max = d if d > max
+  d = path.each_cons(2).sum { distances[_1][_2] }
+  min = [min, d].min
+  max = [max, d].max
 }
 
 p min, max

@@ -1,18 +1,18 @@
-DISTANCE = 2503
+T = 2503
 
-reindeers = DATA.read.split("\n").map { |l|
-  name, speed, duration, rest = /(\w+) can fly (\d+) km\/s for (\d+) seconds, but then must rest for (\d+)/.match(l).captures
+reindeers = DATA.map {
+  name, speed, duration, rest = _1.scan(/(\w+) can fly (\d+) km\/s for (\d+) seconds, but then must rest for (\d+)/)[0]
   r = [speed.to_i] * duration.to_i + [0] * rest.to_i
-  [name, r * (DISTANCE / r.size + 1)]
-}.to_h
+  [name, r * (T / r.size + 1)]
+}
 
-p reindeers.values.map { |r| r[0..DISTANCE].sum }.max
+p reindeers.map { _2[..T].sum }.max
 
-dists = Hash.new(0)
+dists  = Hash.new(0)
 points = Hash.new(0)
 
-DISTANCE.times { |d|
-  reindeers.each { |k, v| dists[k] += v[d] }
+T.times { |t|
+  reindeers.each { |k, v| dists[k]  += v[t] }
   reindeers.each { |k, _| points[k] += 1 if dists[k] == dists.values.max }
 }
 

@@ -1,7 +1,7 @@
-list = DATA.read.split("\n")
+strings = DATA.read.split("\n")
 
-p list.sum(&:size) - list.sum { |s| eval(s).size }
-p list.sum { |s| s.inspect.size } - list.sum(&:size)
+p strings.sum(&:size) - strings.sum { eval(_1).size }
+p strings.sum { _1.inspect.size } - strings.sum(&:size)
 
 __END__
 "qxfcsmh"

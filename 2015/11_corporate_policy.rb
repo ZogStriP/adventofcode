@@ -1,12 +1,9 @@
-INCREASING = Regexp.union [*?a..?z].each_cons(3).map(&:join)
-
-next_password = -> (p) {
-  loop {
-    p.next!
-    return p if p[INCREASING] && !p[/[iol]/] && p.scan(/(.)\1/).flatten.uniq.size > 1
-  }
-}
+ABC = Regexp.union (?a..?z).each_cons(3).map(&:join)
 
 password = "cqjxjnds"
-p password = next_password[password]
-p password = next_password[password]
+password.succ! until password[ABC] && !password[/[iol]/] && password.scan(/(.)\1/).uniq.size > 1
+puts password
+
+password.succ!
+password.succ! until password[ABC] && !password[/[iol]/] && password.scan(/(.)\1/).uniq.size > 1
+puts password

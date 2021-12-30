@@ -1,18 +1,14 @@
-people = DATA.read.split("\n").map.with_object(Hash.new { |h, k| h[k] = Hash.new(0) }) { |l, p|
-  a, d, h, b = /(\w+) would (lose|gain) (\d+) happiness units by sitting next to (\w+)/.match(l).captures
-  p[a][b] = h.to_i * (d["lose"] ? -1 : 1)
+people = DATA.map.with_object(Hash.new { |h, k| h[k] = Hash.new(0) }) { |l, p|
+  a, d, h, b = l.scan(/(\w+) would (\w+) (\d+) happiness units by sitting next to (\w+)/)[0]
+  p[a][b] = h.to_i * (d["gain"] ? 1 : -1)
 }
 
-guests = people.keys
-
-p guests.permutation.map { |seating|
-  (seating << seating[0]).each_cons(2).sum { |a, b| people[a][b] + people[b][a] }
+p people.keys.permutation.map {
+  (_1 << _1[0]).each_cons(2).sum { |a, b| people[a][b] + people[b][a] }
 }.max
 
-guests << "me"
-
-p guests.permutation.map { |seating|
-  (seating << seating[0]).each_cons(2).sum { |a, b| people[a][b] + people[b][a] }
+p (people.keys << "me").permutation.map {
+  (_1 << _1[0]).each_cons(2).sum { |a, b| people[a][b] + people[b][a] }
 }.max
 
 __END__

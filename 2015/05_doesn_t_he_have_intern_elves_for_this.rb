@@ -1,7 +1,7 @@
 strings = DATA.read.split("\n")
 
-p strings.count { |s| s[/(.*[aeiou]){3}/] && s[/(.)\1/] && !s[/ab|cd|pq|xy/] }
-p strings.count { |s| s[/(..).*\1/] && s[/(.).\1/] }
+p strings.count { |l| l.count("aeiou") > 2 && l[/(.)\1/] && !l[/ab|cd|pq|xy/] }
+p strings.count { |l| l[/(..).*\1/] && l[/(.).\1/] }
 
 __END__
 zgsnvdmlfuplrubt

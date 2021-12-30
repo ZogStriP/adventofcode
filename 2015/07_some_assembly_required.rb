@@ -1,4 +1,4 @@
-ops = {
+OPS = {
   "AND"     => "&",
   "OR"      => "|",
   "NOT"     => "~",
@@ -6,19 +6,18 @@ ops = {
   "RSHIFT"  => ">>",
 }
 
-instructions = DATA
+circuit = DATA
   .read
-  .gsub(Regexp.union(ops.keys), ops)
+  .gsub(Regexp.union(OPS.keys), OPS)
   .gsub(/(.+) -> (\w+)/) { "%2s = #{$1}" % $2 }
-  .gsub(/([a-z]+)/) { "_#{$1}" }
+  .gsub(/([a-z]+)/, "_\\1")
   .split("\n")
   .sort
   .rotate
   .join("\n")
 
-p a = eval(instructions)
-
-p eval(instructions.gsub(/_b = \d+/, "_b = #{a}"))
+p a = eval(circuit)
+p eval(circuit.sub(/_b = \d+/, "_b = #{a}"))
 
 __END__
 af AND ah -> ai

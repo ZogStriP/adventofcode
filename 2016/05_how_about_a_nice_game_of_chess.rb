@@ -1,0 +1,15 @@
+require "digest"
+
+DOOR = "abbhdwsy"
+
+i = 0
+p1 = ""
+p2 = [nil] * 8
+
+while p2.any?(&:nil?)
+  next unless (h = Digest::MD5.hexdigest("#{DOOR}#{i += 1}")).start_with?("00000")
+  p1 << h[5] if p1.size < 8
+  p2[h[5].to_i] ||= h[6] if (?0..?7) === h[5]
+end
+
+puts p1, p2.join

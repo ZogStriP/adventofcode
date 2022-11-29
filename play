@@ -3,7 +3,7 @@
 require "cgi"
 require "fileutils"
 
-fail "Missing or incorrect 'AOC_SESSION' env variable" if ENV["AOC_SESSION"]&.size != 96
+fail "Missing or incorrect 'AOC_SESSION' env variable" if ENV["AOC_SESSION"]&.size != 128
 
 now = Time.now.localtime("-05:00")
 day = ARGV.size > 0 ? ARGV[0].to_i : now.day

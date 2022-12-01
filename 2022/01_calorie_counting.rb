@@ -1,6 +1,6 @@
-calories = DATA.read.split("\n\n").map { _1.lines.sum &:to_i }.sort
+calories = DATA.read.split("\n\n").map { _1.lines.sum &:to_i }.max 3
 
-p calories[-1], calories[-3..].sum
+p calories[0], calories.sum
 
 __END__
 11334

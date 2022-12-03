@@ -1,8 +1,8 @@
 PRIORITIES = [*?a..?z, *?A..?Z].each.with_index(1).to_h
 
-sacks = DATA.read.split("\n")
+sacks = DATA.map &:chars
 
-priority = -> (*sacks) { PRIORITIES[sacks.map(&:chars).reduce(:&)[0]] }
+priority = -> (*sacks) { PRIORITIES[sacks.reduce(:&)[0]] }
 
 p sacks.sum { |s| priority[s[...s.size / 2], s[s.size / 2..]] }
 p sacks.each_slice(3).sum { priority[*_1] }

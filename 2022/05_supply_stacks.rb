@@ -4,10 +4,10 @@ moves.map! { _1.scan(/\d+/).map &:to_i }
 
 init = crates[..-2].map { |line|
   line.ljust(crates[-2].size, " ").chars.each_slice(4).map { _1[1][/\w/] }
-}.transpose.map(&:compact)
+}.transpose.map &:compact
 
 puts %i{reverse itself}.map { |t|
-  stacks = init.map(&:dup)
+  stacks = init.map &:dup
   moves.each { |n, from, to| stacks[to - 1].unshift *stacks[from - 1].shift(n).send(t) }
   stacks.map(&:first).join
 }

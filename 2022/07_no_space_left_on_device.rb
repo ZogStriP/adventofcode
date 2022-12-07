@@ -1,18 +1,15 @@
-cwd = []
 sizes = Hash.new(0)
 
-DATA.each { |line|
+DATA.each_with_object([]) { |line, stack|
   case line.split
-  in ["$", "cd", ".."]; cwd.pop
-  in ["$", "cd", dir]; cwd << dir
-  in [size, _]; sizes[cwd.dup] += size.to_i
+  in ["$", "cd", ".."]; stack.pop
+  in ["$", "cd", dir]; stack << [stack[-1], dir].compact * " "
+  in [size, _]; stack.each { sizes[_1] += size.to_i }
   end
 }
 
-sizes.keys.sort_by { -_1.size }.each { |d| sizes[d[..-2]] += sizes[d] }
-
 p sizes.values.select { _1 < 100_000 }.sum
-p sizes.values.select { _1 >= sizes[["/"]] - 40_000_000 }.min
+p sizes.values.select { _1 >= sizes["/"] - 40_000_000 }.min
 
 __END__
 $ cd /

@@ -3,27 +3,26 @@ Y = map.size
 X = map[0].size
 map.flatten!
 
-goal = nil
-start = nil
-starts = []
+goal = start = nil
+goals = {}
 
 Y.times { |y|
   X.times { |x|
     case map[c = y * X + x].chr
-    when ?a; starts << c
-    when ?S; starts << c; map[start = c] = ?a.ord
-    when ?E; map[goal = c] = ?z.ord
+    when ?a; goals[c] = true
+    when ?S; goals[c] = true; map[goal = c] = ?a.ord
+    when ?E; map[start = c] = ?z.ord
     end
   }
 }
 
-steps = -> (starts) {
-  q = starts.dup
+steps = -> (goals) {
+  q = [start]
   d = Array.new(map.size, map.size + 1)
-  starts.each { d[_1] = 0 }
+  d[start] = 0
 
   while c = q.shift
-    break if c == goal
+    return d[c] if goals[c]
 
     y, x = c.divmod(X)
 
@@ -32,13 +31,11 @@ steps = -> (starts) {
       (c - 1 if x > 0),
       (c + 1 if x + 1 < X),
       (c + X if y + 1 < Y),
-    ].each { (d[_1] = d[c] + 1; q << _1) if _1 && map[_1] <= map[c] + 1 && d[_1] > d[c] + 1 }
+    ].each { (d[_1] = d[c] + 1; q << _1) if _1 && map[_1] >= map[c] - 1 && d[_1] > d[c] + 1 }
   end
-
-  d[goal]
 }
 
-p steps[[start]], steps[starts]
+p steps[{ goal => true }], steps[goals]
 
 __END__
 abccccccccccccccccccaaaaaaaaacccccccccccccccccccccccccccccccccccccaaaa

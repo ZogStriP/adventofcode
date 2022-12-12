@@ -17,10 +17,10 @@ Y.times { |y|
   }
 }
 
-steps = -> (s) {
-  q = [s]
+steps = -> (starts) {
+  q = starts.dup
   d = Array.new(map.size, map.size + 1)
-  d[s] = 0
+  starts.each { d[_1] = 0 }
 
   while c = q.shift
     break if c == goal
@@ -38,7 +38,7 @@ steps = -> (s) {
   d[goal]
 }
 
-p steps[start], starts.map { steps[_1] }.min
+p steps[[start]], steps[starts]
 
 __END__
 abccccccccccccccccccaaaaaaaaacccccccccccccccccccccccccccccccccccccaaaa

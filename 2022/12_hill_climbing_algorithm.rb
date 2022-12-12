@@ -11,8 +11,8 @@ Y.times { |y|
   X.times { |x|
     case map[c = y * X + x].chr
     when ?a; starts << c
-    when ?S; starts << (start = c); map[c] = ?a.ord
-    when ?E; goal = c; map[c] = ?z.ord
+    when ?S; starts << c; map[start = c] = ?a.ord
+    when ?E; map[goal = c] = ?z.ord
     end
   }
 }

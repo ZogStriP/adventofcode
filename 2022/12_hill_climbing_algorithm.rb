@@ -32,7 +32,7 @@ steps = -> (s) {
       (c - 1 if x > 0),
       (c + 1 if x + 1 < X),
       (c + X if y + 1 < Y),
-    ].each { _1 && map[_1] <= map[c] + 1 && d[_1] > d[c] + 1 && (d[_1] = d[c] + 1; q << _1) }
+    ].each { (d[_1] = d[c] + 1; q << _1) if _1 && map[_1] <= map[c] + 1 && d[_1] > d[c] + 1 }
   end
 
   d[goal]

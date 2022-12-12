@@ -4,13 +4,14 @@ X = map[0].size
 map.flatten!
 
 goal = nil
+start = nil
 starts = []
 
 Y.times { |y|
   X.times { |x|
     case map[c = y * X + x].chr
     when ?a; starts << c
-    when ?S; starts << c; map[c] = ?a.ord
+    when ?S; starts << (start = c); map[c] = ?a.ord
     when ?E; goal = c; map[c] = ?z.ord
     end
   }
@@ -37,7 +38,7 @@ steps = -> (s) {
   d[goal]
 }
 
-p starts.map { steps[_1] }.min
+p steps[start], starts.map { steps[_1] }.min
 
 __END__
 abccccccccccccccccccaaaaaaaaacccccccccccccccccccccccccccccccccccccaaaa

@@ -15,7 +15,7 @@ def 🚀(a, b)
   end
 end
 
-p pairs.each.with_index(1).map { |(l, r), i| 🚀(l, r) < 0 ? i : 0 }.sum
+p pairs.each.with_index(1).sum { |(l, r), i| 🚀(l, r) < 0 ? i : 0 }
 
 dividers = [[[2]], [[6]]]
 pairs = (pairs.flatten(1) + dividers).sort &method(:🚀)

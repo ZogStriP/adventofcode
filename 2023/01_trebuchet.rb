@@ -6,7 +6,7 @@ puts DATA
          a = l.scan(/\d/)
          b = l.scan(/(?=(\d|#{n.keys * ?|}))/).flatten
          s[0] += [a[0], a[-1]].join.to_i
-         s[1] += [b[0], b[-1]].map { n[_1] || _1.to_i }.join.to_i
+         s[1] += [b[0], b[-1]].map { n[_1] || _1 }.join.to_i
        }
 
 __END__

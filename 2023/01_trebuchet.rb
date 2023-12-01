@@ -1,13 +1,11 @@
 n = %w[one two three four five six seven eight nine].each.with_index(1).to_h
 
-puts DATA
-       .each_line
-       .with_object([0, 0]) { |l, s|
-         a = l.scan(/\d/)
-         b = l.scan(/(?=(\d|#{n.keys * ?|}))/).flatten
-         s[0] += [a[0], a[-1]].join.to_i
-         s[1] += [b[0], b[-1]].map { n[_1] || _1 }.join.to_i
-       }
+puts DATA.each.with_object([0, 0]) { |l, s|
+  a = l.scan(/\d/)
+  b = l.scan(/(?=(\d|#{n.keys * ?|}))/).flatten
+  s[0] += [a[0], a[-1]].join.to_i
+  s[1] += [b[0], b[-1]].map { n[_1] || _1 }.join.to_i
+}
 
 __END__
 14gxqgqsqqbxfpxnbccjc33eight

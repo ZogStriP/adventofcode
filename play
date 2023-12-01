@@ -29,7 +29,7 @@ FileUtils.mkdir_p year.to_s
 
 filename = "%d/%02d_%s.rb" % [year, day, name]
 
-if File.exists?(filename)
+if File.exist?(filename)
   print "Do you want to overwrite '#{filename}'? [Y/n] "
   exit if STDIN.gets[/n/i]
 end

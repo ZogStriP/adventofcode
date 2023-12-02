@@ -1,15 +1,9 @@
 puts DATA.each.with_object([0, 0]) { |l, s|
-  r = g = b = 0
+  c = {}
   game, cubes = l.split ?:
-
-  cubes.scan(/(\d+) (\w)/).each { |n, c|
-    r = [r, n.to_i].max if c[?r]
-    g = [g, n.to_i].max if c[?g]
-    b = [b, n.to_i].max if c[?b]
-  }
-
-  s[0] += game[5..].to_i if r <= 12 && g <= 13 && b <= 14
-  s[1] += r * g * b
+  cubes.scan(/(\d+) (\w)/) { c[_2] = [c[_2], _1].map(&:to_i).max }
+  s[0] += game[5..].to_i if c[?r] <= 12 && c[?g] <= 13 && c[?b] <= 14
+  s[1] += c.values.reduce :*
 }
 
 __END__

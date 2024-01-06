@@ -1,6 +1,5 @@
 M = DATA.map &:chomp
 Y, X = M.size, M[0].size
-YY, XX = 0...Y, 0...X
 N = [[-1, 0], [0, -1], [0, 1], [1, 0]]
 
 M.each_with_index { |l, y|
@@ -9,36 +8,32 @@ M.each_with_index { |l, y|
   }
 }
 
-def steps(start, distances, wrap: false)
-  q = [start]
-  s = Set.new
-  r = Array.new(distances.max + 1, 0)
-
-  (1..distances.max).each { |d|
-    q = q.flat_map { |y, x|
-      N.filter_map { |dy, dx|
-        n = ny = y + dy, nx = x + dx
-        s.add?(n) && (wrap ? !M[ny % Y][nx % X][?#] : YY === ny && XX === nx && !M[ny][nx][?#]) && n
-      }
-    }
-    r[d] = q.size + r[d - 2]
-  }
-
-  distances.map { r[_1] }
-end
-
-p steps(S, [64])[0]
-
-t, x0 = 26_501_365.divmod(X)
+t, x0 = 26_501_365.divmod X
 x1 = x0 + X
 x2 = x1 + X
 
-y0, y1, y2 = steps(S, [x0, x1, x2], wrap: true)
+q = [S]
+s = Set.new
+r = Array.new(x2 + 1, 0)
 
-v = y1 - y0
-a = y2 - 2 * y1 + y0
+(1..x2).each { |d|
+  q = q.flat_map { |y, x|
+    N.filter_map { |dy, dx|
+      n = ny = y + dy, nx = x + dx
+      s.add?(n) && !M[ny % Y][nx % X][?#] && n
+    }
+  }
+  r[d] = q.size + r[d - 2]
+}
 
-p y0 + v * t + a * t * (t - 1) / 2
+p r[64]
+
+y0, y1, y2 = r[x0], r[x1], r[x2]
+
+vel = y1 - y0
+acc = y2 - 2 * y1 + y0
+
+p y0 + (vel * t) + (acc * t * (t - 1) / 2)
 
 __END__
 ...................................................................................................................................

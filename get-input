@@ -1,0 +1,9 @@
+#!/usr/bin/env fish
+
+source /persist/z/aoc_session.fish
+
+set day (if test (count $argv) -ge 1; echo $argv[1]; else; date +%d; end)
+set year (if test (count $argv) -ge 2; echo $argv[2]; else; date +%Y; end)
+
+curl -sS "https://adventofcode.com/$year/day/$day/input" -H "cookie: session=$aoc_session"
+
